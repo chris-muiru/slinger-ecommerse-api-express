@@ -1,15 +1,10 @@
-import { Photo } from "../db/users";
-import { AppDataSource } from "../db/db";
-const photo = new Photo()
-photo.name = "slinger"
-photo.description = "iam a polar bair"
-photo.filename = "photo.jpg"
-photo.views = 1
-photo.isPublished = true
+import express from 'express'
+import { createConnection } from '../models/connection'
+const app = express()
+const PORT = 8000
+// create database connection and sync database
+createConnection()
 
-AppDataSource.manager.save(photo).then(
-    () => {
-        console.log(photo)
-    }
-).catch((err) => { console.log(err) })
-
+app.listen(PORT, () => {
+    console.log(`serving at port ${PORT}`)
+})
