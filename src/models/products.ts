@@ -10,7 +10,7 @@ export class product {
     @PrimaryGeneratedColumn()
     id: number
     @Column({
-        length: 100
+        length: 100,
     })
     title: string
     @Column()
