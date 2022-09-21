@@ -13,8 +13,9 @@ export class User {
 
     @Column()
     email: string
-
-    @Column()
+    @Column({
+        select: false
+    })
     password: string
 
 }
@@ -23,18 +24,20 @@ export class User {
 export class Admin {
     @PrimaryGeneratedColumn()
     id: number
+    @Column()
     isAdmin: boolean
     @OneToOne(() => User)
-    @JoinColumn()
+    @JoinColumn({ name: "admin_id" })
     user: User
 }
 @Entity()
 export class Customer {
     @PrimaryGeneratedColumn()
     id: number
+    @Column()
     isCustomer: boolean
     @OneToOne(() => User)
-    @JoinColumn()
+    @JoinColumn({ name: "customer_id" })
     user: User
 }
 
@@ -42,9 +45,10 @@ export class Customer {
 export class Seller {
     @PrimaryGeneratedColumn()
     id: number
+    @Column()
     isSeller: boolean
     @OneToOne(() => User)
-    @JoinColumn()
+    @JoinColumn({ name: "seller_id" })
     user: User
 }
 
