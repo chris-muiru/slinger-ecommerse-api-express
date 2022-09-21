@@ -1,4 +1,7 @@
 import { User } from "../models/users";
 import { AppDataSource } from "..";
-
-export const userRepository = AppDataSource.getRepository(User)
+import { Repository } from "typeorm";
+// TODO: refactor all repo creation function to use just  one function
+// export const userRepository = (model) => {
+//     return AppDataSource.getRepository(User)
+// }
