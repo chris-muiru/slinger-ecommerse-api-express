@@ -6,6 +6,7 @@ const router: Router = express.Router()
 router.route("/:userId").get(async (req: Request, res: Response) => {
     try {
         const { userId } = req.params
+
         const userRepository = AppDataSource.getRepository(User)
         const user = await userRepository.findOne({
             where: {
@@ -36,7 +37,7 @@ router.route("/:userId").get(async (req: Request, res: Response) => {
             id: Number(userId)
         })
         if (user) {
-            //todo: use repository.update() to update fields
+            // TODO: use repository.update() to update fields
             user.username = username || user.username
             user.email = email || user.email
             user.password = await hashPassword(password) || user.password
