@@ -1,25 +1,38 @@
+import "reflect-metadata"
 import express from 'express'
-import { createConnection } from '../models/connection'
 import session from 'express-session'
 import * as dotenv from 'dotenv'
-import { Authentication, dumbUser } from '../config/CustomAuth'
-import { userCreationRoute } from "../routes/userCreationRoutes"
-
+import { DataSource } from "typeorm"
+import { User, Admin, Seller, Customer } from "./models/users"
+import { userRoutes } from "./routes/userRoutes"
+import { userDetailRoutes } from "./routes/userDetailRoutes"
 dotenv.config()
-const call = async () => {
-    let user = await dumbUser()
-    console.log(user)
-}
+export const AppDataSource = new DataSource({
+    type: "postgres",
+    host: "localhost",
+    port: 5432,
+    username: "kris",
+    password: "Cm@postgres",
+    database: "ecommerseDb",
+    entities: [User, Admin, Seller, Customer,],
+    synchronize: true,
+    logging: false,
+})
+
 
 const PORT = process.env.PORT || 8000
 export const app = express()
-createConnection() // create database connection and sync database
 app.use(express.json())
 
-// app.post("/", Authentication)
-console.log("works here")
-app.use("/signup", userCreationRoute)
-
-app.listen(PORT, () => {
-    console.log(`serving at port ${PORT}`)
-})
+// routes
+app.use("/users", userRoutes)
+app.use("/userDetail", userDetailRoutes)
+AppDataSource.initialize()
+    .then(() => {
+        AppDataSource.synchronize()
+        app.listen(PORT, () => {
+            console.log(`serving at port ${PORT}`)
+            console.log('Connected to database successfully')
+        })
+    })
+    .catch((error) => console.log(error))
