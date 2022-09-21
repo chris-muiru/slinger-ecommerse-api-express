@@ -6,6 +6,8 @@ import { DataSource } from "typeorm"
 import { User, Admin, Seller, Customer } from "./models/users"
 import { userRoutes } from "./routes/userRoutes"
 import { userDetailRoutes } from "./routes/userDetailRoutes"
+import { customerRoutes } from "./routes/customerRoutes"
+import { customerDetailRoutes } from "./routes/customerDetail"
 dotenv.config()
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -27,6 +29,8 @@ app.use(express.json())
 // routes
 app.use("/users", userRoutes)
 app.use("/userDetail", userDetailRoutes)
+app.use("/customers", customerRoutes)
+app.use("/customerDetail", customerDetailRoutes)
 AppDataSource.initialize()
     .then(() => {
         AppDataSource.synchronize()
