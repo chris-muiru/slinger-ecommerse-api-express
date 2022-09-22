@@ -8,6 +8,8 @@ import { userRoutes } from "./routes/userRoutes"
 import { userDetailRoutes } from "./routes/userDetailRoutes"
 import { customerRoutes } from "./routes/customerRoutes"
 import { customerDetailRoutes } from "./routes/customerDetail"
+import { join } from "path"
+import morgan from "morgan"
 dotenv.config()
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -16,15 +18,15 @@ export const AppDataSource = new DataSource({
     username: "kris",
     password: "Cm@postgres",
     database: "ecommerseDb",
-    entities: [User, Admin, Seller, Customer,],
+    entities: [join(__dirname, "./models/*.{ts,js}")],
     synchronize: true,
     logging: false,
 })
-
-
+console.log(__dirname)
 const PORT = process.env.PORT || 8000
 export const app = express()
 app.use(express.json())
+app.use(morgan("dev"))
 
 // routes
 app.use("/users", userRoutes)
