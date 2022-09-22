@@ -1,4 +1,4 @@
-import { AppDataSource } from ".."
+import { AppDataSource } from "../dataSource"
 import { User } from "../models/users"
 
 const getCustomUser = async (userId: number) => {
