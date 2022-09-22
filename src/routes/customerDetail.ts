@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
-import { AppDataSource } from "..";
 import statusCodes from "../../statusCodes/statusCodes";
+import { AppDataSource } from "../dataSource";
 import { Customer } from "../models/users";
 
 const router: Router = express.Router()
