@@ -36,7 +36,10 @@ export class Customer {
     id: number
     @Column()
     isCustomer: boolean
-    @OneToOne(() => User)
+    @OneToOne(() => User,
+        {
+            onDelete: "CASCADE"
+        })
     @JoinColumn({ name: "customer_id" })
     user: User
 }
