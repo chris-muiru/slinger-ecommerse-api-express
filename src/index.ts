@@ -11,11 +11,14 @@ import { customerDetailRoutes } from "./routes/customerDetail"
 import morgan from "morgan"
 import { sellerRoutes } from "./routes/sellerRoutes"
 import { sellerDetailRoutes } from "./routes/sellerDetailRoutes"
+import { adminRoutes } from "./routes/adminRoutes"
+import { adminDetailRoutes } from "./routes/adminDetailRoutes"
 dotenv.config()
 
-console.log(__dirname)
-const PORT = process.env.PORT || 8000
 export const app = express()
+const PORT = process.env.PORT || 8000
+
+// middlewares
 app.use(express.json())
 app.use(morgan("dev"))
 
@@ -26,6 +29,10 @@ app.use("/customers", customerRoutes)
 app.use("/customerDetail", customerDetailRoutes)
 app.use("/sellers", sellerRoutes)
 app.use("/sellerDetail", sellerDetailRoutes)
+app.use("/admins", adminRoutes)
+app.use("/adminDetail", adminDetailRoutes)
+
+
 AppDataSource.initialize()
     .then(() => {
         AppDataSource.synchronize()
