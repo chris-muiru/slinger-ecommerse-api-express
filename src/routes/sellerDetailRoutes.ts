@@ -23,7 +23,7 @@ router.route("/:sellerId").get(async (req: Request, res: Response) => {
 }).put(async (req: Request, res: Response) => {
     const { sellerId } = req.params
     const sellerRepository = AppDataSource.getRepository(Seller)
-    const { isCustomer } = req.body
+    const { isSeller } = req.body
     try {
         const seller: Seller | null = await sellerRepository.findOne({
             where: {
@@ -31,7 +31,7 @@ router.route("/:sellerId").get(async (req: Request, res: Response) => {
             }
         })
         if (seller) {
-            seller.isSeller = isCustomer
+            seller.isSeller = isSeller
             sellerRepository.save(seller)
             res.status(statusCodes.HTTP_200_OK).json(seller)
         } else {
