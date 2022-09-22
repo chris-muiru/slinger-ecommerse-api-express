@@ -1,7 +1,8 @@
 import express, { Request, Response, Router } from "express"
 import { User } from "../models/users"
-import { AppDataSource } from ".."
 import hashPassword from "../utils/hashPassword"
+import statusCodes from "../../statusCodes/statusCodes"
+import { AppDataSource } from "../dataSource"
 const router: Router = express.Router()
 router.route("/:userId").get(async (req: Request, res: Response) => {
     try {
@@ -19,14 +20,13 @@ router.route("/:userId").get(async (req: Request, res: Response) => {
             }
 
         })
-        res.status(200).json(user || {})
+        res.status(statusCodes.HTTP_200_OK).json(user || {})
 
     }
     catch (err) {
-        res.status(400).json({ err: "bad request" })
+        res.status(statusCodes.HTTP_404_NOT_FOUND).json({ err: "bad request" })
 
     }
-
 
 }).put(async (req: Request, res: Response) => {
     const { userId } = req.params
@@ -43,13 +43,13 @@ router.route("/:userId").get(async (req: Request, res: Response) => {
             user.password = await hashPassword(password) || user.password
 
             userRepository.save(user)
-            res.status(200).json({ msg: "updated successfully" })
+            res.status(statusCodes.HTTP_200_OK).json({ msg: "updated successfully" })
         }
         else {
-            res.status(400).json({ msg: `user with id:${userId} doesnt exist` })
+            res.status(statusCodes.HTTP_404_NOT_FOUND).json({ msg: `user with id:${userId} doesnt exist` })
         }
     } catch (err) {
-        res.status(400).json({ err: "bad request" })
+        res.status(statusCodes.HTTP_500_INTERNAL_SERVER_ERROR).json({ err: "bad request" })
     }
 
 }).delete(async (req: Request, res: Response) => {
@@ -61,13 +61,13 @@ router.route("/:userId").get(async (req: Request, res: Response) => {
         })
         if (user) {
             await userRepository.remove(user)
-            res.status(200).json({ msg: "user removed successfully" })
+            res.status(statusCodes.HTTP_200_OK).json({ msg: "user removed successfully" })
         }
         else {
-            res.status(400).json({ msg: `user with id:${userId} doesnt exist` })
+            res.status(statusCodes.HTTP_404_NOT_FOUND).json({ msg: `user with id:${userId} doesnt exist` })
         }
     } catch (err) {
-        res.status(400).json({ err: "bad request" })
+        res.status(statusCodes.HTTP_500_INTERNAL_SERVER_ERROR).json({ err: "bad request" })
 
     }
 
