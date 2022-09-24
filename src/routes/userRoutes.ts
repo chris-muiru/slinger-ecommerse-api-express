@@ -1,7 +1,6 @@
 import express, { Router } from "express"
 import { Request, Response, NextFunction } from "express"
 import { User } from "../models/users"
-import * as bycrypt from "bcrypt"
 import hashPassword from "../utils/hashPassword"
 import statusCodes from "../../statusCodes/statusCodes"
 import { AppDataSource } from "../dataSource"
