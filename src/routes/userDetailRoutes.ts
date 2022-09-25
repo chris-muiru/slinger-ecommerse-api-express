@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express"
 import { User } from "../models/users"
 import hashPassword from "../utils/hashPassword"
-import statusCodes from "../../statusCodes/statusCodes"
+import statusCodes from "../statusCodes/statusCodes"
 import { AppDataSource } from "../dataSource"
 const router: Router = express.Router()
 router.route("/:userId").get(async (req: Request, res: Response) => {

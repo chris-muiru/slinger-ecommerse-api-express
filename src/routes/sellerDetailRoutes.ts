@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import statusCodes from "../../statusCodes/statusCodes";
+import statusCodes from "../statusCodes/statusCodes";
 import { AppDataSource } from "../dataSource";
 import { Seller } from "../models/users";
 

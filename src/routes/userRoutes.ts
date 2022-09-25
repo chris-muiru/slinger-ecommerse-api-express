@@ -2,7 +2,7 @@ import express, { Router } from "express"
 import { Request, Response, NextFunction } from "express"
 import { User } from "../models/users"
 import hashPassword from "../utils/hashPassword"
-import statusCodes from "../../statusCodes/statusCodes"
+import statusCodes from "../statusCodes/statusCodes"
 import { AppDataSource } from "../dataSource"
 const router = express.Router()
 router.route("").post(async (req: Request, res: Response, next: NextFunction) => {
