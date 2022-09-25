@@ -1,5 +1,5 @@
-import bycrypt from "bcrypt"
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
+import { Admin } from "./admins"
 
 @Entity()
 export class User {
@@ -15,41 +15,11 @@ export class User {
     email: string
     @Column()
     password: string
+    @OneToOne(() => Admin, (admin) => admin.user)
+    admin: Admin
 
 }
 
-@Entity()
-export class Admin {
-    @PrimaryGeneratedColumn()
-    id: number
-    @Column()
-    isAdmin: boolean
-    @OneToOne(() => User)
-    @JoinColumn({ name: "admin_id" })
-    user: User
-}
-@Entity()
-export class Customer {
-    @PrimaryGeneratedColumn()
-    id: number
-    @Column()
-    isCustomer: boolean
-    @OneToOne(() => User,
-        {
-            onDelete: "CASCADE"
-        })
-    @JoinColumn({ name: "customer_id" })
-    user: User
-}
 
-@Entity()
-export class Seller {
-    @PrimaryGeneratedColumn()
-    id: number
-    @Column()
-    isSeller: boolean
-    @OneToOne(() => User)
-    @JoinColumn({ name: "seller_id" })
-    user: User
-}
+
 

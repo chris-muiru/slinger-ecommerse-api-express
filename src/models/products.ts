@@ -1,5 +1,4 @@
 import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Seller } from "./users";
 
 // export const createOrderedProducts = () => {
 //     return sequelize.define("Ordered", {
