@@ -1,5 +1,5 @@
 import express, { Request, Router, Response } from "express"
-import statusCodes from "../../statusCodes/statusCodes"
+import statusCodes from "../statusCodes/statusCodes"
 import { AppDataSource } from "../dataSource"
 import { Seller, User } from "../models/users"
 import getCustomUser from "../utils/customUser"
@@ -27,18 +27,18 @@ router.route("").get(async (req: Request, res: Response) => {
 router.post("/create/:userId", async (req: Request, res: Response) => {
     const { userId } = req.params
     const { isSeller } = req.body
-    const user: User | null = await getCustomUser(Number(userId))
+    // const user: User | null = await getCustomUser(Number(userId))
     const sellerRepository = AppDataSource.getRepository(Seller)
     try {
-        if (user) {
+        if (req.session.user) {
             const sellerExists = await sellerRepository.findOne({
                 where: {
-                    user: user
+                    user: req.session.user
                 }
             })
             if (!sellerExists) {
                 const seller = new Seller()
-                seller.user = user
+                seller.user = req.session.user
                 seller.isSeller = isSeller
                 sellerRepository.save(seller)
                 res.status(statusCodes.HTTP_200_OK).json(
