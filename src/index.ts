@@ -3,7 +3,6 @@ import express from 'express'
 import session from 'express-session'
 import * as dotenv from 'dotenv'
 import { AppDataSource } from "./dataSource"
-import { User, Admin, Seller, Customer } from "./models/users"
 import { userRoutes } from "./routes/userRoutes"
 import { userDetailRoutes } from "./routes/userDetailRoutes"
 import { customerRoutes } from "./routes/customerRoutes"
@@ -17,6 +16,7 @@ import { initializePassport } from "./config/passportLocal"
 import passport from "passport"
 import { checkisAuthenticated } from "./middlewares/isAuthenticatedMiddleware"
 import { customAuthenticate } from "./config/customAuth"
+import { isAdmin } from "./middlewares/isAdmin"
 dotenv.config()
 
 export const app = express()
@@ -36,18 +36,17 @@ app.use(
         cookie: { maxAge: 3600000000 },
     })
 )
-
 app.use("/auth/login", customAuthenticate)
+app.use("/users", userRoutes)
 app.use(checkisAuthenticated)
 // routes
-app.use("/users", userRoutes)
 app.use("/userDetail", userDetailRoutes)
 app.use("/customers", customerRoutes)
 app.use("/customerDetail", customerDetailRoutes)
 app.use("/sellers", sellerRoutes)
 app.use("/sellerDetail", sellerDetailRoutes)
-app.use("/admins", adminRoutes)
-app.use("/adminDetail", adminDetailRoutes)
+app.use("/admins", isAdmin, adminRoutes)
+app.use("/adminDetail", isAdmin, adminDetailRoutes)
 
 // orm initialization
 AppDataSource.initialize()
