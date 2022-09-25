@@ -1,8 +1,9 @@
 import express, { Request, Response, Router } from "express"
-import statusCodes from "../../statusCodes/statusCodes"
+import statusCodes from "../statusCodes/statusCodes"
 import { AppDataSource } from "../dataSource"
 import { Admin, User } from "../models/users"
 import getCustomUser from "../utils/customUser"
+
 
 const router: Router = express.Router()
 router.route("").get(async (req: Request, res: Response) => {
@@ -26,18 +27,18 @@ router.route("").get(async (req: Request, res: Response) => {
 router.post("/create/:userId", async (req: Request, res: Response) => {
     const { userId } = req.params
     const { isAdmin } = req.body
-    const user: User | null = await getCustomUser(Number(userId))
+    // const user: User | null = getCustomUser(req)
     const adminRepository = AppDataSource.getRepository(Admin)
     try {
-        if (user) {
+        if (req.session.user) {
             const adminExists = await adminRepository.findOne({
                 where: {
-                    user: user
+                    user: req.session.user
                 }
             })
             if (!adminExists) {
                 const admin = new Admin()
-                admin.user = user
+                admin.user = req.session.user
                 admin.isAdmin = isAdmin
                 adminRepository.save(admin)
                 res.status(statusCodes.HTTP_200_OK).json(
