@@ -1,10 +1,8 @@
-import express, { NextFunction, Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { AppDataSource } from "../dataSource"
 import { User } from "../models/users"
 import * as bcrypt from "bcrypt"
 import statusCodes from "../statusCodes/statusCodes"
-import { Session } from "express-session";
-// import { ISession } from "../types"
 
 
 
@@ -17,7 +15,6 @@ export const customAuthenticate = async (req: Request, res: Response, next: Next
     })
 
     if (user) {
-        // TODO: override req.session... of express-session to use the Isession i created
         if (await bcrypt.compare(password, user.password)) {
             req.session.user = user
             req.session.isAuthenticated = true
