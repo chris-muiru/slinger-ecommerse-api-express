@@ -16,6 +16,7 @@ import { adminDetailRoutes } from "./routes/adminDetailRoutes"
 import { initializePassport } from "./config/passportLocal"
 import passport from "passport"
 import { checkisAuthenticated } from "./middlewares/isAuthenticatedMiddleware"
+import { customAuthenticate } from "./config/customAuth"
 dotenv.config()
 
 export const app = express()
@@ -25,38 +26,19 @@ const PORT = process.env.PORT || 8000
 app.use(express.json())
 app.use(morgan("dev"))
 
-// authentication with passport
-initializePassport(passport)
-
 app.use(
     //TODO: change secret to only read from SESSION_SECRET
     session({
         name: "slingerEccomerseAuth",
-        secret: process.env.SESSION_SECRET || "definetly not my secret...",
+        secret: process.env.SESSION_SECRET || "bjgugfyr64676876875",
         resave: false,
         saveUninitialized: false,
         cookie: { maxAge: 3600000000 },
     })
 )
 
-app.use(passport.initialize())
-app.use(passport.session())
-
-app.post("/auth/login", (req, res, next) => {
-    passport.authenticate("local", (err, user) => {
-        if (err) throw err
-        req.logIn(user, (loginError) => {
-            if (loginError) {
-                console.log(loginError)
-                res.status(404).send({ message: "user not found" })
-            } else if (user) {
-                res.status(200).send({ message: "authenticated" })
-            }
-        })
-    })(req, res, next)
-})
+app.use("/auth/login", customAuthenticate)
 app.use(checkisAuthenticated)
-
 // routes
 app.use("/users", userRoutes)
 app.use("/userDetail", userDetailRoutes)
