@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import statusCodes from "../statusCodes/statusCodes";
 import { AppDataSource } from "../dataSource";
-import { Admin } from "../models/users";
+import { Admin } from "../models/admins";
 
 const router: Router = express.Router()
 router.route("/:adminId").get(async (req: Request, res: Response) => {

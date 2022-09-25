@@ -1,8 +1,9 @@
 import express, { Request, Response, Router } from "express"
 import statusCodes from "../statusCodes/statusCodes"
 import { AppDataSource } from "../dataSource"
-import { Customer, User } from "../models/users"
+import { User } from "../models/users"
 import getCustomUser from "../utils/customUser"
+import { Customer } from "../models/customers"
 
 const router: Router = express.Router()
 router.route("").get(async (req: Request, res: Response) => {

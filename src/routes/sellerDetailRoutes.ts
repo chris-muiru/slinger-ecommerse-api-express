@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import statusCodes from "../statusCodes/statusCodes";
 import { AppDataSource } from "../dataSource";
-import { Seller } from "../models/users";
+import { Seller } from "../models/sellers";
 
 const router: Router = express.Router()
 router.route("/:sellerId").get(async (req: Request, res: Response) => {

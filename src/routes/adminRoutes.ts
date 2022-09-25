@@ -1,8 +1,9 @@
 import express, { Request, Response, Router } from "express"
 import statusCodes from "../statusCodes/statusCodes"
 import { AppDataSource } from "../dataSource"
-import { Admin, User } from "../models/users"
+import { User } from "../models/users"
 import getCustomUser from "../utils/customUser"
+import { Admin } from "../models/admins"
 
 
 const router: Router = express.Router()
