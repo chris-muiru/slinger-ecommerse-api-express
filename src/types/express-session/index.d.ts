@@ -5,5 +5,6 @@ declare module "express-session" {
     interface SessionData {
         user: User;
         isAuthenticated: boolean
+        isSuperUser: boolean
     }
 }
