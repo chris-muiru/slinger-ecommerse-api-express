@@ -12,11 +12,11 @@ import { sellerRoutes } from "./routes/sellerRoutes"
 import { sellerDetailRoutes } from "./routes/sellerDetailRoutes"
 import { adminRoutes } from "./routes/adminRoutes"
 import { adminDetailRoutes } from "./routes/adminDetailRoutes"
-import { initializePassport } from "./config/passportLocal"
-import passport from "passport"
 import { checkisAuthenticated } from "./middlewares/isAuthenticatedMiddleware"
 import { customAuthenticate } from "./config/customAuth"
 import { isAdmin } from "./middlewares/isAdmin"
+import { isCustomer } from "./middlewares/isCustomer"
+import { isSeller } from "./middlewares/isSeller"
 dotenv.config()
 
 export const app = express()
@@ -36,15 +36,17 @@ app.use(
         cookie: { maxAge: 3600000000 },
     })
 )
+//TODO: create a signup route to signup user
 app.use("/auth/login", customAuthenticate)
-app.use("/users", userRoutes)
 app.use(checkisAuthenticated)
+
 // routes
-app.use("/userDetail", userDetailRoutes)
-app.use("/customers", customerRoutes)
-app.use("/customerDetail", customerDetailRoutes)
-app.use("/sellers", sellerRoutes)
-app.use("/sellerDetail", sellerDetailRoutes)
+app.use("/users", isAdmin, userRoutes)
+app.use("/userDetail", isAdmin, userDetailRoutes)
+app.use("/customers", isCustomer, customerRoutes)
+app.use("/customerDetail", isCustomer, customerDetailRoutes)
+app.use("/sellers", isSeller, sellerRoutes)
+app.use("/sellerDetail", isSeller, sellerDetailRoutes)
 app.use("/admins", isAdmin, adminRoutes)
 app.use("/adminDetail", isAdmin, adminDetailRoutes)
 
