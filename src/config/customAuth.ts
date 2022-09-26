@@ -3,18 +3,24 @@ import { AppDataSource } from "../dataSource"
 import { User } from "../models/users"
 import * as bcrypt from "bcrypt"
 import statusCodes from "../statusCodes/statusCodes"
+import { Admin } from "../models/admins"
 
 
 
 export const customAuthenticate = async (req: Request, res: Response, next: NextFunction) => {
     const { username, password } = req.body
-
+    //TODO: try using bidirectional relations 
     const userRepo = AppDataSource.getRepository(User)
-    let user = await userRepo.findOneBy({
+    let user: User | null = await userRepo.findOneBy({
         username: username
     })
-
+    const adminRepo = AppDataSource.getRepository(Admin)
     if (user) {
+        let userIsAdmin = await adminRepo.findOneBy({
+            user: user
+        })
+        userIsAdmin && (req.session.isSuperUser = true)
+        
         if (await bcrypt.compare(password, user.password)) {
             req.session.user = user
             req.session.isAuthenticated = true
