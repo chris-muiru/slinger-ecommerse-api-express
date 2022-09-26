@@ -1,9 +1,11 @@
-import express, { Router } from "express"
+import express from "express"
 import { Request, Response, NextFunction } from "express"
 import { User } from "../models/users"
 import hashPassword from "../utils/hashPassword"
 import statusCodes from "../statusCodes/statusCodes"
 import { AppDataSource } from "../dataSource"
+import { isAdmin } from "../middlewares/isAdmin"
+
 const router = express.Router()
 router.route("").post(async (req: Request, res: Response, next: NextFunction) => {
     let { username, password, email } = req.body
