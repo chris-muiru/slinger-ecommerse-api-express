@@ -28,18 +28,18 @@ router.route("").get(async (req: Request, res: Response) => {
 router.post("/create/:userId", async (req: Request, res: Response) => {
     const { userId } = req.params
     const { isCustomer } = req.body
-    // const user: User | null = await getCustomUser(Number(userId))
+    const user: User | null = await getCustomUser(Number(userId))
     const customerRepository = AppDataSource.getRepository(Customer)
     try {
-        if (req.session.user) {
+        if (user) {
             const customerExists = await customerRepository.findOne({
                 where: {
-                    user: req.session.user
+                    user: user
                 }
             })
             if (!customerExists) {
                 const customer = new Customer()
-                customer.user = req.session.user
+                customer.user = user
                 customer.isCustomer = isCustomer
                 customerRepository.save(customer)
                 res.status(statusCodes.HTTP_200_OK).json(
