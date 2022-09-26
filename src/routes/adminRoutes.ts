@@ -28,18 +28,18 @@ router.route("").get(async (req: Request, res: Response) => {
 router.post("/create/:userId", async (req: Request, res: Response) => {
     const { userId } = req.params
     const { isAdmin } = req.body
-    // const user: User | null = getCustomUser(req)
+    const user: User | null = await getCustomUser(Number(userId))
     const adminRepository = AppDataSource.getRepository(Admin)
     try {
-        if (req.session.user) {
+        if (user) {
             const adminExists = await adminRepository.findOne({
                 where: {
-                    user: req.session.user
+                    user: user
                 }
             })
             if (!adminExists) {
                 const admin = new Admin()
-                admin.user = req.session.user
+                admin.user = user
                 admin.isAdmin = isAdmin
                 adminRepository.save(admin)
                 res.status(statusCodes.HTTP_200_OK).json(
