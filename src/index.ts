@@ -41,7 +41,7 @@ app.use("/auth/login", customAuthenticate)
 app.use(checkisAuthenticated)
 
 // routes
-app.use("/users", isAdmin, userRoutes)
+app.use("/users", userRoutes)
 app.use("/userDetail", isAdmin, userDetailRoutes)
 app.use("/customers", isCustomer, customerRoutes)
 app.use("/customerDetail", isCustomer, customerDetailRoutes)
