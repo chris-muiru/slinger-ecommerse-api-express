@@ -33,7 +33,7 @@ router.route("").post(async (req: Request, res: Response, next: NextFunction) =>
     catch (err) {
         res.status(statusCodes.HTTP_500_INTERNAL_SERVER_ERROR).json({ msg: "bad Request" })
     }
-}).get(async (req: Request, res: Response) => {
+}).get(isAdmin, async (req: Request, res: Response) => {
     try {
         const userRepository = AppDataSource.getRepository(User)
         const users = await userRepository.find({
