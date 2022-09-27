@@ -20,7 +20,17 @@ router.route("/:userId").get(async (req: Request, res: Response) => {
             }
 
         })
-        res.status(statusCodes.HTTP_200_OK).json(user || {})
+        if (user) {
+            if (user.username == req.session.user?.username || req.session.isSuperUser) {
+                res.status(statusCodes.HTTP_200_OK).json(user || {})
+            }
+            else {
+                res.status(statusCodes.HTTP_401_UNAUTHORISED).json({ msg: "not authorized" })
+            }
+        } else {
+            res.status(statusCodes.HTTP_200_OK).json({})
+
+        }
 
     }
     catch (err) {
@@ -37,13 +47,19 @@ router.route("/:userId").get(async (req: Request, res: Response) => {
             id: Number(userId)
         })
         if (user) {
-            // TODO: use repository.update() to update fields
-            user.username = username || user.username
-            user.email = email || user.email
-            user.password = await hashPassword(password) || user.password
+            if (user.username == req.session.user?.username || req.session.isSuperUser) {
+                // TODO: use repository.update() to update fields
+                user.username = username || user.username
+                user.email = email || user.email
+                user.password = await hashPassword(password) || user.password
 
-            userRepository.save(user)
-            res.status(statusCodes.HTTP_200_OK).json({ msg: "updated successfully" })
+                userRepository.save(user)
+                res.status(statusCodes.HTTP_200_OK).json({ msg: "updated successfully" })
+            }
+            else {
+                res.status(statusCodes.HTTP_401_UNAUTHORISED).json({ msg: "not authorized" })
+            }
+
         }
         else {
             res.status(statusCodes.HTTP_404_NOT_FOUND).json({ msg: `user with id:${userId} doesnt exist` })
@@ -60,8 +76,15 @@ router.route("/:userId").get(async (req: Request, res: Response) => {
             id: Number(userId)
         })
         if (user) {
-            await userRepository.remove(user)
-            res.status(statusCodes.HTTP_200_OK).json({ msg: "user removed successfully" })
+
+            if (user.username == req.session.user?.username || req.session.isSuperUser) {
+
+                await userRepository.remove(user)
+                res.status(statusCodes.HTTP_200_OK).json({ msg: "user removed successfully" })
+            }
+            else {
+                res.status(statusCodes.HTTP_401_UNAUTHORISED).json({ msg: "not authorized" })
+            }
         }
         else {
             res.status(statusCodes.HTTP_404_NOT_FOUND).json({ msg: `user with id:${userId} doesnt exist` })
@@ -70,7 +93,6 @@ router.route("/:userId").get(async (req: Request, res: Response) => {
         res.status(statusCodes.HTTP_500_INTERNAL_SERVER_ERROR).json({ err: "bad request" })
 
     }
-
 
 })
 
