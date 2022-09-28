@@ -4,7 +4,9 @@ import { User } from "./users"
 export class Seller {
     @PrimaryGeneratedColumn()
     id: number
-    @Column()
+    @Column({
+        default: false
+    })
     isSeller: boolean
     @OneToOne(() => User)
     @JoinColumn({ name: "seller_id" })
