@@ -4,12 +4,13 @@ import { User } from "./users"
 export class Customer {
     @PrimaryGeneratedColumn()
     id: number
-    @Column()
+    @Column({
+        default: true
+    })
     isCustomer: boolean
-    @OneToOne(() => User,
-        {
-            onDelete: "CASCADE"
-        })
+    @OneToOne(() => User, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "customer_id" })
     user: User
 }
