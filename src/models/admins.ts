@@ -4,7 +4,9 @@ import { User } from "./users"
 export class Admin {
     @PrimaryGeneratedColumn()
     id: number
-    @Column()
+    @Column({
+        default: false
+    })
     isAdmin: boolean
     @OneToOne(() => User, (user) => user.admin)
     @JoinColumn({ name: "admin_id" })
