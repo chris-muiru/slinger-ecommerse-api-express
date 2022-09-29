@@ -8,7 +8,6 @@ export const isAdmin = async (req: Request, res: Response, next: NextFunction) =
     const user: User | undefined = req.session.user
     const adminRepo = AppDataSource.getRepository(Admin)
     if (user) {
-        //TODO: think if i need to check the isAdmin field in Admin entity
         const adminQuery = await adminRepo.findOne({
             where: {
                 user: user
@@ -19,7 +18,7 @@ export const isAdmin = async (req: Request, res: Response, next: NextFunction) =
             next()
         }
         else {
-            res.status(statusCodes.HTTP_401_UNAUTHORISED).json({ msg: "not authorized" })
+            res.status(statusCodes.HTTP_401_UNAUTHORISED).json({ msg: "unauthorized" })
         }
     }
 }

@@ -12,7 +12,7 @@ export const isSeller = async (req: Request, res: Response, next: NextFunction) 
     if (seller || req.session.isSuperUser) {
         next()
     } else {
-        res.status(statusCodes.HTTP_401_UNAUTHORISED).json({ message: "not authenticated" })
+        res.status(statusCodes.HTTP_401_UNAUTHORISED).json({ message: "unauthorised" })
     }
 
 }
