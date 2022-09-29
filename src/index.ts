@@ -17,6 +17,8 @@ import { customAuthenticate } from "./config/customAuth"
 import { isAdmin } from "./middlewares/isAdmin"
 import { isCustomer } from "./middlewares/isCustomer"
 import { isSeller } from "./middlewares/isSeller"
+import { auctionProductRoutes } from "./routes/auctionProductsRoutes"
+import { auctionProductDetailRoutes } from "./routes/auctionProductDetailRoutes"
 dotenv.config()
 
 export const app = express()
@@ -38,10 +40,10 @@ app.use(
 )
 //TODO: create a signup route to signup user
 app.use("/auth/login", customAuthenticate)
+app.use("/users", userRoutes)
 app.use(checkisAuthenticated)
 
 // routes
-app.use("/users", userRoutes)
 app.use("/userDetail", isAdmin, userDetailRoutes)
 app.use("/customers", isCustomer, customerRoutes)
 app.use("/customerDetail", isCustomer, customerDetailRoutes)
@@ -49,6 +51,9 @@ app.use("/sellers", isSeller, sellerRoutes)
 app.use("/sellerDetail", isSeller, sellerDetailRoutes)
 app.use("/admins", isAdmin, adminRoutes)
 app.use("/adminDetail", isAdmin, adminDetailRoutes)
+app.use("/auction", auctionProductRoutes)
+app.use("/auctionDetail", auctionProductDetailRoutes)
+
 
 // orm initialization
 AppDataSource.initialize()
