@@ -10,12 +10,12 @@ export class AuctionedProduct {
         length: 100,
     })
     title: string
-    // @Column()
-    // image: string
     @Column()
     description: string
     @Column()
     price: number
+    @Column()
+    isBought: boolean
     @ManyToOne(() => Seller)
     seller: Seller
 }
