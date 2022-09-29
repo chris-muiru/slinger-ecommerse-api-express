@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 import { Admin } from "./admins"
 import { Customer } from "./customers"
+import { Seller } from "./sellers"
 
 @Entity()
 export class User {
@@ -18,8 +19,10 @@ export class User {
     password: string
     @OneToOne(() => Admin, (admin) => admin.user)
     admin: Admin
-    @OneToOne(() => Admin, (admin) => admin.user)
+    @OneToOne(() => Customer, (customer) => customer.user)
     customer: Customer
+    @OneToOne(() => Seller, (seller) => seller.user)
+    seller: Seller
 }
 
 
