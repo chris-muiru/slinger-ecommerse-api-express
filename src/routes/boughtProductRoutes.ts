@@ -7,11 +7,9 @@ import customCustomer from "../utils/customCustomer"
 import customSeller from "../utils/customSeller"
 const router: Router = express.Router()
 
-// TODO: use bidirectional relation
 router.route("").get(async (req: Request, res: Response) => {
     const productRepo = AppDataSource.getRepository(AuctionedProduct)
     const products: AuctionedProduct[] = await productRepo.find()
-
     res.status(statusCodes.HTTP_200_OK).json(products)
 
 }).post(isSeller, async (req: Request, res: Response) => {
