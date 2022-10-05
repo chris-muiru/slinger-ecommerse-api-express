@@ -1,10 +1,9 @@
 import { AppDataSource } from "../dataSource"
 import { Customer } from "../models/customers"
-import { Request } from "express"
-const customCustomer = async (req: Request) => {
+const customCustomer = async (customerId: number) => {
     const repo = AppDataSource.getRepository(Customer)
     return await repo.findOneBy({
-        user: req.session.user
+        id: customerId
     })
 }
 export default customCustomer
