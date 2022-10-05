@@ -39,6 +39,7 @@ router.post("/create/:userId", async (req: Request, res: Response) => {
             })
             if (!adminExists) {
                 const admin = new Admin()
+                
                 admin.user = user
                 admin.isAdmin = isAdmin
                 adminRepository.save(admin)
