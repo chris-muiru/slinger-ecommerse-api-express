@@ -19,6 +19,7 @@ import { isCustomer } from "./middlewares/isCustomer"
 import { isSeller } from "./middlewares/isSeller"
 import { auctionProductRoutes } from "./routes/auctionProductsRoutes"
 import { auctionProductDetailRoutes } from "./routes/auctionProductDetailRoutes"
+import { orderRoutes } from "./routes/orderRoutes"
 dotenv.config()
 
 export const app = express()
@@ -38,7 +39,6 @@ app.use(
         cookie: { maxAge: 3600000000 },
     })
 )
-//TODO: create a signup route to signup user
 app.use("/auth/login", customAuthenticate)
 app.use("/users", userRoutes)
 app.use(checkisAuthenticated)
@@ -53,7 +53,7 @@ app.use("/admins", isAdmin, adminRoutes)
 app.use("/adminDetail", isAdmin, adminDetailRoutes)
 app.use("/auction", auctionProductRoutes)
 app.use("/auctionDetail", auctionProductDetailRoutes)
-
+app.use("/orders", orderRoutes)
 
 // orm initialization
 AppDataSource.initialize()
