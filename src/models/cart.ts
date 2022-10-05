@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { BoughtProducts } from "./boughtProducts";
+import { Order } from "./order";
 import { Customer } from "./customers";
 
 @Entity()
@@ -11,6 +11,6 @@ export class cart {
     boughtAt: Date
     @OneToOne(() => Customer)
     customer: Customer
-    @ManyToOne(() => BoughtProducts)
-    boughtProduct: BoughtProducts
+    @ManyToOne(() => Order)
+    order: Order
 }
